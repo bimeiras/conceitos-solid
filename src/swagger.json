@@ -1,0 +1,151 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Users Documentation",
+        "description": "This is an API Users",
+        "version": "1.0.0",
+        "contact": {
+            "email": "mabe@gmail.com"
+        }
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": ["User"],
+                "summary": "Create User",
+                "description": "Create a new user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "User Name Sample",
+                                    "email": "usersample@email.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "admin": {
+                                                "type": "boolean"
+                                            },
+                                            "created_at": {
+                                                "type": "Date"
+                                            },
+                                            "updated_at": {
+                                                "type": "Date"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Email already taken"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["User"],
+                "summary": "List users",
+                "description": "List all users. Allowed to admins users only",
+                "parameters": [{
+                    "in": "header",
+                    "name": "user_id",
+                    "description": "Required to authenticate the request.",
+                    "schema": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "required": true
+                
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "User not found or not an admin user"
+                    }
+                }
+            }
+        },
+        "/users/{user_id}": {
+            "get": {
+                "tags": ["User"],
+                "summary": "Show user profile",
+                "description": "Show a specific user profile",
+                "parameters": [{
+                    "in": "path",
+                    "name": "user_id",
+                    "description": "Specific user ID.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "User not found!"
+                    }
+                }
+            }
+        },
+        "/users/{user_id}/admin": {
+            "patch": {
+                "tags": ["User"],
+                "summary": "Turn admin",
+                "description": "Give admin access to a specific user",
+                "parameters": [{
+                    "in": "path",
+                    "name": "user_id",
+                    "description": "Specific user ID.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "User not found!"
+                    }
+                }
+            }
+        }
+    } 
+}
